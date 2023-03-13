@@ -47,6 +47,10 @@ input {
   box-sizing: border-box;
 }
 
+input:focus {
+  outline: none;
+}
+
 .login_pwd {
   display: flex;
   gap: 10px;

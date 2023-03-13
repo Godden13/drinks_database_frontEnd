@@ -5,6 +5,7 @@ import "./RegistrationPage.css";
 
 export default function Registration() {
   const [isLoading, setIsLoading] = useState(false);
+  const [passFail, setPassFail] = useState("");
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -13,15 +14,19 @@ export default function Registration() {
     const data = {
       firstName: target.firstName.value,
       lastName: target.lastName.value,
-      email: target.email.value,
+      emailAddress: target.email.value,
       phone: target.phone.value,
       password: target.password.value,
       passwordConfirm: target.password.value,
     };
     setIsLoading(true);
-    await register(data);
-    setIsLoading(false);
-    navigate("/");
+    if (target.password.value === target.passwordConfirmation.value) {
+      await register(data);
+      setIsLoading(false);
+      navigate("/login");
+    }else {
+      setPassFail('The password doesnt match')
+    }
   }
 
   return (
@@ -62,6 +67,8 @@ export default function Registration() {
           required
         />
       </div>
+      {passFail && <p className="error">{passFail}</p>}
+
       <button>Register</button>
       <p>
         Already have an account? <Link to="login">login</Link>

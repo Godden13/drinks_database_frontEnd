@@ -42,13 +42,13 @@ export default function Login() {
         <h2>Enter your info here</h2>
         <div className="login_pwd">
           <input type="text" placeholder="email" name="emailAddress" required />
-          <input type="text" placeholder="Password" name="password" />
+          <input type="password" placeholder="Password" name="password" />
         </div>
       </div>
       <button>Login</button>
 
       <p>
-        Don't have an account? <Link to="/">signup</Link>
+        Don't have an account? <Link to="/register">signup</Link>
       </p>
     </form>
   );
