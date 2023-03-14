@@ -10,3 +10,7 @@ export function login(username, password) {
 export function getCurrentUser() {
   return httpClient.get("current-user").then(({ data }) => data);
 }
+
+export function updateCurrentUser() {
+  return httpClient.patch("current-user").then(({ data }) => data);
+}
