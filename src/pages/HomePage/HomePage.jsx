@@ -1,22 +1,17 @@
-import { useEffect, useState } from 'react';
-import { getCurrentUser } from '../../api/auth';
-import './HomePage.css';
+import { Link } from "react-router-dom";
+import AuthGaurd from "../../components/AuthGaurd";
+import "./HomePage.css";
 
-export default function HomePage(){
-
-    const [user, setUser] = useState();
-
-    useEffect(() => {
-      getCurrentUser().then(setUser);
-    }, []);
-
+function HomePage({ user }) {
   return (
     <div className="homepage">
       <h1>Welcome to the home page</h1>
       <p>
-        {user?.firstName} {user?.lastName}
-        H
+        {user?.firstName} {user?.lastName}H
       </p>
+      <Link to="/profile">Profile</Link>
     </div>
   );
-}
+};
+
+export default AuthGaurd(HomePage);

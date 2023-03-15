@@ -1,15 +1,7 @@
-import { useContext } from 'react';
-import { DrinkContext } from '../../api/drinksContext';
+import AuthGaurd from '../../components/AuthGaurd';
 import './ProfilePage.css';
 
-export default function Profile(){
-  const user = useContext(DrinkContext);
-  // const [editDisable, setEditDisble] = useState(false)
-
-  // function handleUpdate(){
-  //   if
-  // }
-
+function Profile({user}){
   return (
     <form className="profile">
       Here is your information
@@ -30,3 +22,5 @@ export default function Profile(){
     </form>
   );
 }
+
+export default AuthGaurd(Profile);

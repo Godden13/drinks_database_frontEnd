@@ -8,8 +8,6 @@ import { DrinkContext } from './api/drinksContext';
 import Profile from './pages/ProfilePage/ProfilePage';
 
 function App() {
-
-
   return (
     <div className="App">
       <DrinkContext.Provider>
