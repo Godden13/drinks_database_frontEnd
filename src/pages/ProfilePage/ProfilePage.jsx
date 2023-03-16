@@ -1,26 +1,66 @@
-import AuthGaurd from '../../components/AuthGaurd';
+import AuthGuard from '../../components/AuthGaurd';
+import { FaEdit, FaUserCircle } from "react-icons/fa";
 import './ProfilePage.css';
 
 function Profile({user}){
   return (
     <form className="profile">
-      Here is your information
-      <div className="profilePic">
-        <img
-          src="https://www.pngitem.com/pimgs/m/504-5040528_empty-profile-picture-png-transparent-png.png"
-          alt="profileImage"
-          id="profileImage"
-        />
-      </div>
-      <div className="profile_page_info">
-        <input type="text" placeholder="update your name" defaultValue={user?.firstName} />
-        <input type="text" placeholder="update your last name" defaultValue={user?.lastName}/>
-        <input type="text" placeholder="update your email" value={user?.email} disabled />
-        <input type="text" placeholder="update your phone number" defaultValue={user?.phone}/>
+      <h1>My Profile</h1>
+      <div className="profileInfo">
+        <div className="profile_page_info">
+          <div id="image">
+            <div className="image" title="change profile picture">
+              <FaUserCircle className="userIcon" />
+              <FaEdit className="userIcon1" />
+            </div>
+          </div>
+          <div className="signupCard">
+            <h2>First Name</h2>
+            <input
+              type="text"
+              placeholder="update your name"
+              defaultValue={user?.firstName}
+            />
+          </div>
+          <div className="signupCard">
+            <h2>Last Name</h2>
+            <input
+              type="text"
+              placeholder="update your last name"
+              defaultValue={user?.lastName}
+            />
+          </div>
+          <div className="signupCard">
+            <h2>Email</h2>
+            <input
+              type="text"
+              placeholder="update your email"
+              value={user?.emailAddress}
+              disabled
+            />
+          </div>
+          <div className="signupCard">
+            <h2>Phone number</h2>
+            <input
+              type="text"
+              placeholder="update your phone number"
+              defaultValue={user?.phone}
+            />
+          </div>
+          <div className="signupCard">
+            <h2>api-key</h2>
+            <input
+              type="text"
+              placeholder="update your phone number"
+              defaultValue={user?.apiKey}
+              disabled
+            />
+          </div>
+        </div>
       </div>
       {/* <button type='button' onClick={handleUpdate}>edit</button> */}
     </form>
   );
 }
 
-export default AuthGaurd(Profile);
+export default AuthGuard(Profile);

@@ -4,7 +4,7 @@ import { getCurrentUser } from "../api/auth";
 
 let currentUser;
 
-export default function AuthGaurd(Component) {
+export default function AuthGuard(Component) {
   function Guard(props) {
     const [user, setUser] = useState(currentUser);
     const navigate = useNavigate();
