@@ -21,7 +21,11 @@ export default function AuthGuard(Component) {
         });
     }, [navigate, user]);
 
-    return user ? <Component {...props} user={user} /> : <>loading...</>;
+    return user ? (
+      <Component {...props} user={user} />
+    ) : (
+      <>loading...</>
+    );
   }
 
   return Guard;
