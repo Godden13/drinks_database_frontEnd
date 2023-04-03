@@ -1,0 +1,40 @@
+
+.crud {
+  width: 100vw;
+  height: 100vh;
+}
+
+.info {
+  height: 50%;
+  width: 80%;
+  margin: auto;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  border-bottom: 1px solid black;
+}
+
+.infoCards {
+  width: 20vw;
+  height: 30vh;
+  border-radius: 10px;
+  background-color: #8e5f5f;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.infoCards:active {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+/* #glasses {
+  background-image: url("https://pyxis.nymag.com/v1/imgs/ecc/73b/7cb1a5552befe9c96e571edfd801a9b7cb-libbey-polaris.2x.rsquare.w600.jpg");
+  width: 20vw;
+  height: 30vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+} */

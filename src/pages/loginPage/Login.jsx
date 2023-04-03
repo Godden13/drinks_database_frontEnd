@@ -23,6 +23,7 @@ export default function Login() {
       const { data } = await login(user.emailAddress, user.password);
       saveToken(data.token);
       navigate("/homepage");
+      window.location.reload(true);
     } catch (e) {
       console.log(e);
       if (e.response.status === 401) {

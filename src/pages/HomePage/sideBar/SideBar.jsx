@@ -1,24 +1,30 @@
-import { useState } from 'react';
 import './SideBar.css';
 
-export default function SideBar() {
-  const [show, setShow] = useState(false);
-
-  const handleclick = ()=>{
-    setShow(true)
-  }
-
+export default function SideBar({ drinks, category, ingredients, glasses}) {
   return (
-    <div>
-      <div className="category">
-        <input type='checkbox'>Category</input>
+    <div className='sideBar'>
+      <div className="creator">
+        {
+          drinks.map((drink) => {
+            return (
+              <div className="drinks" key={drink.id}>
+                <img src={drink.src} alt={drink.name} id="image" />
+                <p>{drink.description}</p>
+                <button className="readMore">Read More</button>
+              </div>
+            );
+          })
+        }
       </div>
-      <div className="glass">
-        <input>Glass1</input>
+      <div className="categories">
+
       </div>
-      <div className="ingredient">
-        <input>ingredient1</input>
+      <div className="ingredients">
+
+      </div>
+      <div className="glasses">
+
       </div>
     </div>
-  );
+  )
 }

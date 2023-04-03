@@ -1,17 +1,25 @@
-import { Link } from "react-router-dom";
 import AuthGuard from "../../components/AuthGaurd";
 import "./HomePage.css";
 
-function HomePage({ user }) {
+function HomePage({ drinks, user }) {
   return (
     <div className="homepage">
       <h1>Welcome to the home page</h1>
       <p>
         {user?.firstName} {user?.lastName}
       </p>
-      <Link to="/profile">Profile</Link>
+      <div className="drinks">
+        {drinks?.map((drink) => {
+          return (
+            <div className="drinks" key={drink.id}>
+              <img src={drink.src} alt={drink.name} id="image" />
+              <p>{drink.description}</p>
+              <button className="readMore">Read More</button>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
-
 export default AuthGuard(HomePage);

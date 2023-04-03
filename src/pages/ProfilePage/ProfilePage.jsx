@@ -3,11 +3,9 @@ import { FaEdit, FaUserCircle } from "react-icons/fa";
 import './ProfilePage.css';
 import { useState } from 'react';
 import { updateCurrentUser } from '../../api/auth';
-import { useNavigate } from 'react-router-dom';
 
 function Profile({user}){
     const [isLoading, setIsLoading] = useState(false);
-    const navigate = useNavigate();
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -24,11 +22,7 @@ function Profile({user}){
     setIsLoading(false);
   }
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    navigate("/login", { replace: true });
-    window.location.reload(true);
-  }
+
 
   return (
     <form className="profile" onSubmit={handleUpdate}>
@@ -90,7 +84,6 @@ function Profile({user}){
         </div>
       </div>
       <button type="submit">Update</button>
-      <button type='button' onClick={logout}>logout</button>
     </form>
   );
 }
