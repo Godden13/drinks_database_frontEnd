@@ -15,21 +15,21 @@ import Categories from './pages/CRUD/NestedRoutes/Categories/Categories';
 import Ingredients from './pages/CRUD/NestedRoutes/Ingredients/Ingredients';
 
 function App() {
-  const [drink, setDrink] = useState();
+  const [drinks, setDrink] = useState();
   const [ingredient, setIngredient] = useState();
   const [category, setCategory] = useState();
   const [glass, setGlass] = useState();
 
   useEffect(() => {
     getDrinks().then((data) => {
-      setDrink(data);
+      setDrink([...data]);
     }).catch(() => {
       return { status: 401 };
     });
 
     getGlasses()
       .then((data) => {
-        setGlass(data);
+        setGlass([...data]);
       })
       .catch(() => {
         return { status: 401 };
@@ -37,7 +37,7 @@ function App() {
 
     getIngredients()
       .then((data) => {
-        setIngredient(data);
+        setIngredient([...data]);
       })
       .catch(() => {
         return { status: 401 };
@@ -45,7 +45,7 @@ function App() {
 
     getCategories()
       .then((data) => {
-        setCategory(data);
+        setCategory([...data]);
       })
       .catch(() => {
         return { status: 401 };
@@ -54,7 +54,7 @@ function App() {
 
   return (
     <div className="App">
-      <DrinkContext.Provider value={{ drink, ingredient, category, glass}}>
+      <DrinkContext.Provider value={{ drinks, ingredient, category, glass}}>
         <BrowserRouter>
           <NavBar />
           <Routes>

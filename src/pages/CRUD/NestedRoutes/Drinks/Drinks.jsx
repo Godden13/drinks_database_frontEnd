@@ -1,15 +1,19 @@
 import { useContext } from 'react';
 import { useState } from 'react';
 import { FaPlusCircle } from 'react-icons/fa';
-import { registerDrinks } from '../../../../api/auth';
+import { registerDrinks, updateCurrurrentDrink } from '../../../../api/auth';
 import { DrinkContext } from '../../../../api/drinksContext';
 import './Drinks.css';
 
 export default function Drinks() {
-  const [addInfo, setAddInfo] = useState(false)
-  const {drinks, categories} = useContext(DrinkContext);
+  const [addInfo, setAddInfo] = useState(false);
+  const [editInfo, setEditInfo] = useState(false);
 
-  const toggleModal = () => {setAddInfo(!addInfo); };
+
+  const {drinks} = useContext(DrinkContext);
+
+  const toggleModal = () => {setAddInfo(!addInfo)};
+  const toggleEditModal = () => {setEditInfo(!editInfo)};
 
   const handleSubmit = async (e)=>{
     e.preventDefault();
@@ -26,9 +30,19 @@ export default function Drinks() {
     toggleModal()
   }
 
-
-  console.log(drinks)
-  console.log(categories)
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const { target } = e;
+    const data = {
+      id: drinks.id,
+      name: target.name.value,
+      description: target.description.value,
+      imageUrl: target.image_url.value,
+      recipe: target.recipe.value,
+    };
+    console.log(data);
+    await updateCurrurrentDrink(data);
+  };
 
   return (
     <div className="InputData">
@@ -36,17 +50,29 @@ export default function Drinks() {
         <FaPlusCircle className="addItem" />
       </div>
 
-      {/* {drinks.map((drink) => {
-        return (
-          <div className="InputData">
-            <img src={drink.imageUrl} alt="drink_image" />
-            <h3>{drink.name}</h3>
-            <p>{drink.description}</p>
-
-          </div>
-        )
-      })} */}
-
+      <div className="drinkData">
+        {drinks?.map((drink) => {
+          return (
+            <div className="crudData" key={drink.id}>
+              <img src={drink.imageUrl} alt="drink_image" />
+              <h3>{drink.name}</h3>
+              <p>{drink.description}</p>
+              <div className="crudBtn">
+                <button
+                  className="crudBtnItem"
+                  id="crudEdit"
+                  onClick={toggleEditModal}
+                >
+                  Edit
+                </button>
+                <button className="crudBtnItem" id="crudDelete">
+                  Delete
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
       {addInfo && (
         <div className="modal">
@@ -109,11 +135,38 @@ export default function Drinks() {
             <button type="submit" className="crudBtn">
               Add
             </button>
-            <button type='button' className="close" onClick={toggleModal}>
+            <button type="button" className="close" onClick={toggleModal}>
               X
             </button>
           </form>
         </div>
+      )}
+
+      {editInfo && (
+        <form className="editDrinks" onSubmit={handleUpdate}>
+          <div className="signupCard">
+            <h2>Name</h2>
+            <input type="text" placeholder={drinks.name} name="name" required />
+          </div>
+          <div className="signupCard">
+            <h2>Description</h2>
+            <input
+              type="text"
+              placeholder="description"
+              name="description"
+              required
+            />
+          </div>
+          <div className="signupCard">
+            <h2>Description</h2>
+            <input
+              type="text"
+              placeholder="description"
+              name="description"
+              required
+            />
+          </div>
+        </form>
       )}
     </div>
   );
