@@ -1,9 +1,12 @@
 import AuthGuard from "../../components/AuthGaurd";
+import SideBar from "../../components/SideBar/SideBar";
 import "./HomePage.css";
 
 function HomePage({ drinks, user }) {
   return (
     <div className="homepage">
+      <SideBar />
+
       <h1>Welcome to the home page</h1>
       <p>
         {user?.firstName} {user?.lastName}

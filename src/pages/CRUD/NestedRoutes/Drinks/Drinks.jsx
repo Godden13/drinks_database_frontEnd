@@ -1,45 +1,50 @@
 import { useState, useContext } from "react";
-import { FaPlusCircle } from 'react-icons/fa';
-import { deleteCurrentDrink, registerDrinks, updateCurrurrentDrink } from '../../../../api/drinksAuth';
-import { DrinkContext } from '../../../../api/drinksContext';
-import './Drinks.css';
+import { FaPlusCircle } from "react-icons/fa";
+import {
+  deleteCurrentDrink,
+  registerDrinks,
+  updateCurrurrentDrink,
+} from "../../../../api/drinksAuth";
+import { DrinkContext } from "../../../../api/drinksContext";
+import "./Drinks.css";
 
 export default function Drinks() {
   const [addInfo, setAddInfo] = useState(false);
   const [editInfo, setEditInfo] = useState(false);
-  // const [updateDrink, setUpdateDrink] = useState();
-  const {drinks} = useContext(DrinkContext);
+  const [updateDrink, setUpdateDrink] = useState();
+  const { drinks } = useContext(DrinkContext);
 
-  const toggleModal = () => {setAddInfo(!addInfo)};
-  const toggleEditModal = () => {setEditInfo(!editInfo)};
+  const toggleModal = () => {
+    setAddInfo(!addInfo);
+  };
 
-  const handleSubmit = async (e)=>{
+  const toggleEditModal = () => {
+    setEditInfo(!editInfo);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { target  } = e
+    const { target } = e;
     const data = {
       name: target.drinkname.value,
       description: target.description.value,
       imageUrl: target.image_url.value,
       recipe: target.recipe.value,
+    };
+    if (!data) {
+      return { sendstatus: "Error" };
+    } else {
+      await registerDrinks(data);
     }
-     if(!data){
-      return {sendstatus: 'Error'}
-     }else { await registerDrinks(data)}
-    toggleModal()
-  }
+    toggleModal();
+  };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const { target } = e;
-    const data = {
-      id: drinks.id,
-      name: target.name.value,
-      description: target.description.value,
-      imageUrl: target.image_url.value,
-      recipe: target.recipe.value,
-    };
-    console.log(data);
-    await updateCurrurrentDrink(data);
+    const data = new FormData(e.currentTarget);
+    const values = Object.fromEntries(data.entries());
+    const value = { id: updateDrink.id, ...values };
+    await updateCurrurrentDrink(value);
     toggleEditModal();
   };
 
@@ -59,8 +64,9 @@ export default function Drinks() {
                 <button
                   className="crudBtnItem"
                   id="crudEdit"
-                  onClick={() =>{
-                    toggleEditModal()
+                  onClick={() => {
+                    setUpdateDrink(drink);
+                    toggleEditModal();
                   }}
                 >
                   Edit
@@ -151,12 +157,14 @@ export default function Drinks() {
         <div className="modal">
           <div className="overLay">
             <form className="addData" onSubmit={handleUpdate}>
+              <h2>Edit a new drink</h2>
               <div className="signupCard">
                 <h2>Name</h2>
                 <input
                   type="text"
-                  placeholder='name'
+                  placeholder="name"
                   name="name"
+                  defaultValue={updateDrink.name}
                   required
                 />
               </div>
@@ -166,15 +174,17 @@ export default function Drinks() {
                   type="text"
                   placeholder="description"
                   name="description"
+                  defaultValue={updateDrink.description}
                   required
                 />
               </div>
               <div className="signupCard">
-                <h2>Description</h2>
+                <h2>recipe</h2>
                 <input
                   type="text"
-                  placeholder="description"
-                  name="description"
+                  placeholder="recipe"
+                  name="recipe"
+                  defaultValue={updateDrink.recipe}
                   required
                 />
               </div>

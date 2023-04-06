@@ -53,7 +53,7 @@ function App() {
       .catch(() => {
         return { status: 401 };
       });
-  }, [drinks, categories, ingredients, glasses])
+  }, [])
 
   return (
     <div className="App">
