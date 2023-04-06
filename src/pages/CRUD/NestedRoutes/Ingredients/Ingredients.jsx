@@ -1,10 +1,14 @@
+import { useContext } from 'react';
 import { useState } from 'react';
 import { FaPlusCircle } from 'react-icons/fa';
-import { registerIngredients } from '../../../../api/auth';
+import { DrinkContext } from '../../../../api/drinksContext';
+import { deleteingredient, registerIngredient } from '../../../../api/ingredient';
 import './Ingredients.css';
 
 export default function Ingredients() {
      const [addInfo, setAddInfo] = useState(false);
+
+     const {ingredients} = useContext(DrinkContext)
 
      const toggleModal = () => {
        setAddInfo(!addInfo);
@@ -20,17 +24,31 @@ export default function Ingredients() {
         if(!data){
           return {sendStatus: 'error'}
         }else {
-          await registerIngredients(data)
+          await registerIngredient(data)
+          toggleModal()
         }
 
      }
 
      return (
        <div className="InputData">
-         <div id="add" className="crudData" onClick={toggleModal}>
-           <FaPlusCircle className="addItem" />
+         <div className="ingredientData">
+           <div id="add" className="crudData" onClick={toggleModal}>
+             <FaPlusCircle className="addItem" />
+           </div>
+           {ingredients?.map((ingredient) => {
+            return (
+              <div className="crudData" key={ingredient.id}>
+                <h3>{ingredient.name}</h3>
+                <p>{ingredient.description}</p>
+                <div className="crudBtn">
+                  <button className="crudBtnItem" id="crudEdit">Edit</button>
+                  <button className="crudBtnItem" id="crudDelete" onClick={() => {deleteingredient(ingredient)}}>Delete</button>
+                </div>
+              </div>
+            )
+           })}
          </div>
-
          {addInfo && (
            <div className="modal">
              <div className="overLay"></div>
@@ -54,8 +72,10 @@ export default function Ingredients() {
                    required
                  />
                </div>
-               <button className="add">Add</button>
-               <button type='button' className="close" onClick={toggleModal}>
+               <button type="submit" className="add">
+                 Add
+               </button>
+               <button type="button" className="close" onClick={toggleModal}>
                  X
                </button>
              </form>

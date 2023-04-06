@@ -7,29 +7,32 @@ import Loading from './pages/LandingPage/LoadingPage';
 import Profile from './pages/ProfilePage/ProfilePage';
 import NavBar from './components/NavBar/NavBar';
 import { useEffect, useState } from 'react';
-import { getCategories, getDrinks, getGlasses, getIngredients } from './api/auth';
 import { DrinkContext } from './api/drinksContext';
 import CRUD from './pages/CRUD/CRUD';
 import Drinks from './pages/CRUD/NestedRoutes/Drinks/Drinks';
 import Categories from './pages/CRUD/NestedRoutes/Categories/Categories';
 import Ingredients from './pages/CRUD/NestedRoutes/Ingredients/Ingredients';
+import { getDrinks } from './api/drinksAuth';
+import { getGlasses } from './api/glasses';
+import { getIngredients } from './api/ingredient';
+import { getCategories } from './api/categories';
 
 function App() {
-  const [drinks, setDrink] = useState();
-  const [ingredient, setIngredient] = useState();
-  const [category, setCategory] = useState();
-  const [glass, setGlass] = useState();
+  const [drinks, setDrinks] = useState();
+  const [ingredients, setIngredients] = useState();
+  const [categories, setCategories] = useState();
+  const [glasses, setGlasses] = useState();
 
   useEffect(() => {
     getDrinks().then((data) => {
-      setDrink([...data]);
+      setDrinks([...data]);
     }).catch(() => {
       return { status: 401 };
     });
 
     getGlasses()
       .then((data) => {
-        setGlass([...data]);
+        setGlasses([...data]);
       })
       .catch(() => {
         return { status: 401 };
@@ -37,7 +40,7 @@ function App() {
 
     getIngredients()
       .then((data) => {
-        setIngredient([...data]);
+        setIngredients([...data]);
       })
       .catch(() => {
         return { status: 401 };
@@ -45,16 +48,16 @@ function App() {
 
     getCategories()
       .then((data) => {
-        setCategory([...data]);
+        setCategories([...data]);
       })
       .catch(() => {
         return { status: 401 };
       });
-  }, [])
+  }, [drinks, categories, ingredients, glasses])
 
   return (
     <div className="App">
-      <DrinkContext.Provider value={{ drinks, ingredient, category, glass}}>
+      <DrinkContext.Provider value={{ drinks, ingredients, categories, glasses}}>
         <BrowserRouter>
           <NavBar />
           <Routes>

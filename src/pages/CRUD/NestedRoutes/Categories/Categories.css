@@ -8,3 +8,18 @@
   color: black;
   font-weight: 900;
 }
+
+.CategoryData {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.catData {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.crudBtn {
+  display: flex;
+  align-items: flex-end;
+}

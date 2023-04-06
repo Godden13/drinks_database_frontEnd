@@ -1,15 +1,13 @@
-import { useContext } from 'react';
-import { useState } from 'react';
+import { useState, useContext } from "react";
 import { FaPlusCircle } from 'react-icons/fa';
-import { registerDrinks, updateCurrurrentDrink } from '../../../../api/auth';
+import { deleteCurrentDrink, registerDrinks, updateCurrurrentDrink } from '../../../../api/drinksAuth';
 import { DrinkContext } from '../../../../api/drinksContext';
 import './Drinks.css';
 
 export default function Drinks() {
   const [addInfo, setAddInfo] = useState(false);
   const [editInfo, setEditInfo] = useState(false);
-
-
+  // const [updateDrink, setUpdateDrink] = useState();
   const {drinks} = useContext(DrinkContext);
 
   const toggleModal = () => {setAddInfo(!addInfo)};
@@ -42,15 +40,15 @@ export default function Drinks() {
     };
     console.log(data);
     await updateCurrurrentDrink(data);
+    toggleEditModal();
   };
 
   return (
     <div className="InputData">
-      <div id="add" className="crudData" onClick={toggleModal}>
-        <FaPlusCircle className="addItem" />
-      </div>
-
       <div className="drinkData">
+        <div id="add" className="crudData" onClick={toggleModal}>
+          <FaPlusCircle className="addItem" />
+        </div>
         {drinks?.map((drink) => {
           return (
             <div className="crudData" key={drink.id}>
@@ -61,11 +59,18 @@ export default function Drinks() {
                 <button
                   className="crudBtnItem"
                   id="crudEdit"
-                  onClick={toggleEditModal}
+                  onClick={() =>{
+                    toggleEditModal()
+                  }}
                 >
                   Edit
                 </button>
-                <button className="crudBtnItem" id="crudDelete">
+                <button
+                  type="submit"
+                  className="crudBtnItem"
+                  id="crudDelete"
+                  onClick={() => deleteCurrentDrink(drink)}
+                >
                   Delete
                 </button>
               </div>
@@ -120,7 +125,7 @@ export default function Drinks() {
               />
             </div>
             <div className="signupCard">
-              <h2>Category</h2>
+              <h2>Category ID</h2>
               <input
                 type="text"
                 placeholder="category"
@@ -143,30 +148,45 @@ export default function Drinks() {
       )}
 
       {editInfo && (
-        <form className="editDrinks" onSubmit={handleUpdate}>
-          <div className="signupCard">
-            <h2>Name</h2>
-            <input type="text" placeholder={drinks.name} name="name" required />
+        <div className="modal">
+          <div className="overLay">
+            <form className="addData" onSubmit={handleUpdate}>
+              <div className="signupCard">
+                <h2>Name</h2>
+                <input
+                  type="text"
+                  placeholder='name'
+                  name="name"
+                  required
+                />
+              </div>
+              <div className="signupCard">
+                <h2>Description</h2>
+                <input
+                  type="text"
+                  placeholder="description"
+                  name="description"
+                  required
+                />
+              </div>
+              <div className="signupCard">
+                <h2>Description</h2>
+                <input
+                  type="text"
+                  placeholder="description"
+                  name="description"
+                  required
+                />
+              </div>
+              <button type="submit" className="modify">
+                Modify
+              </button>
+              <button type="button" className="close" onClick={toggleEditModal}>
+                X
+              </button>
+            </form>
           </div>
-          <div className="signupCard">
-            <h2>Description</h2>
-            <input
-              type="text"
-              placeholder="description"
-              name="description"
-              required
-            />
-          </div>
-          <div className="signupCard">
-            <h2>Description</h2>
-            <input
-              type="text"
-              placeholder="description"
-              name="description"
-              required
-            />
-          </div>
-        </form>
+        </div>
       )}
     </div>
   );

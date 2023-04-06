@@ -1,10 +1,15 @@
+import { useContext } from 'react';
 import { useState } from 'react';
 import { FaPlusCircle } from 'react-icons/fa';
-import { registerCategories } from '../../../../api/auth';
+import { deleteCategory, registerCategories } from '../../../../api/categories';
+import { DrinkContext } from '../../../../api/drinksContext';
 import './Categories.css'
 
 export default function Categories() {
     const [addInfo, setAddInfo] = useState(false);
+
+    const { categories } = useContext(DrinkContext);
+    console.log(categories)
 
       const toggleModal = () => {
         setAddInfo(!addInfo);
@@ -15,16 +20,40 @@ export default function Categories() {
         const {target} = e
         const data = {
           name: target.category_name.value,
-          description: target.description.value,
+          description: target.description.value.toString,
         };
-
         await registerCategories(data)
+        toggleModal();
       }
 
   return (
     <div className="InputData">
-      <div id="add" className="crudData" onClick={toggleModal}>
-        <FaPlusCircle className="addItem" />
+      <div className="CategoryData">
+        <div id="add" className="crudData" onClick={toggleModal}>
+          <FaPlusCircle className="addItem" />
+        </div>
+        {categories?.map((category) => {
+          return (
+            <div className="crudData" key={category.id}>
+              <h3>{category.name}</h3>
+              <p>{category.description}</p>
+              <div className="crudBtn">
+                <button className="crudBtnItem" id="crudEdit">
+                  Edit
+                </button>
+                <button
+                  className="crudBtnItem"
+                  id="crudDelete"
+                  onClick={() => {
+                    deleteCategory(category);
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {addInfo && (
@@ -51,7 +80,7 @@ export default function Categories() {
               />
             </div>
             <button type="submit">Add</button>
-            <button type='button' className="close" onClick={toggleModal}>
+            <button type="button" className="close" onClick={toggleModal}>
               X
             </button>
           </form>
