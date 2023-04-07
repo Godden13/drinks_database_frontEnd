@@ -6,13 +6,14 @@ import {
   updateCurrurrentDrink,
 } from "../../../../api/drinksAuth";
 import { DrinkContext } from "../../../../api/drinksContext";
+import AuthGuard from "../../../../components/AuthGaurd";
 import "./Drinks.css";
 
-export default function Drinks() {
+function Drinks({ user }) {
   const [addInfo, setAddInfo] = useState(false);
   const [editInfo, setEditInfo] = useState(false);
   const [updateDrink, setUpdateDrink] = useState();
-  const { drinks } = useContext(DrinkContext);
+  const { drinks, categories, ingredients, glasses } = useContext(DrinkContext);
 
   const toggleModal = () => {
     setAddInfo(!addInfo);
@@ -30,6 +31,8 @@ export default function Drinks() {
       description: target.description.value,
       imageUrl: target.image_url.value,
       recipe: target.recipe.value,
+      user_id: user.id,
+      is_alcoholic: target.isAlcoholic
     };
     if (!data) {
       return { sendstatus: "Error" };
@@ -43,7 +46,7 @@ export default function Drinks() {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const values = Object.fromEntries(data.entries());
-    const value = { id: updateDrink.id, ...values };
+    const value = { id: updateDrink.id, ...values, user_id: user.id };
     await updateCurrurrentDrink(value);
     toggleEditModal();
   };
@@ -122,26 +125,28 @@ export default function Drinks() {
               <input type="text" placeholder="recipe" name="recipe" required />
             </div>
             <div className="signupCard">
-              <h2>ingredient ID</h2>
-              <input
-                type="text"
-                placeholder="ingredient"
-                name="ingredient"
-                required
-              />
+              <h2>Ingredients</h2>
+              <div className="drinkIngredients">
+                <select multiple>
+                    {ingredients.map((ingredient) => (
+                      <option value={ingredient.id}>{ingredient.name}</option>
+                    ))}
+                </select>
+              </div>
             </div>
             <div className="signupCard">
-              <h2>Category ID</h2>
-              <input
-                type="text"
-                placeholder="category"
-                name="image_url"
-                required
-              />
+              <h2>Categories</h2>
+              <div className="drinkCategories">
+                <select multiple>
+                  {categories.map((category) => (
+                    <option value={category.id}>{category.name}</option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div className="alcohol">
               <p>Is it alcoholic</p>
-              <input type="checkbox" />
+              <input type="checkbox" name="isAlcoholic" />
             </div>
             <button type="submit" className="crudBtn">
               Add
@@ -201,3 +206,5 @@ export default function Drinks() {
     </div>
   );
 }
+
+export default AuthGuard(Drinks);
